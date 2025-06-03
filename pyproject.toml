@@ -1,0 +1,93 @@
+[project]
+name = "data-centre-modelling"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.10.3",
+    "nbformat>=5.10.4",
+    "pandas>=2.2.3",
+    "plotly>=6.1.2",
+    "pypsa>=0.34.1",
+    "seaborn>=0.13.2",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pre-commit>=3.5.0",
+    "xdoctest>=1.1.2",
+    "pytest>=7.4.3",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.6",
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.4.9",
+    "mkdocs-awesome-pages-plugin>=2.9.2",
+    "mkdocstrings[python]>=0.24.0",
+]
+
+[tool.uv.pip]
+generate-hashes = true
+
+[build-system]
+requires = ["uv_build>=0.7.10,<0.8.0"]
+build-backend = "uv_build"
+
+[project.urls]
+"Repository" = "https://github.com/ryanjenkinson/mypackage"
+"Documentation" = "https://github.com/ryanjenkinson/mypackage/tree/main/docs/api/"
+"Author Website" = "https://ryan.eco"
+
+[tool.ruff]
+target-version = 'py311'
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+ignore = [
+    "E501", # line too long
+]
+select = [
+    "C9", # mccabe complexity - have simple variable names
+    "E", # pycodestyle - errors
+    "F", # pyflakes
+    "W", # pycodestyle - warnings
+    "D", # pydocstyle
+    "G", # flake8 - logging formatting
+    "A", # flake8 - builtins
+    "PT", # flake8 - pytest style
+    "S", # flake8 - bandit
+    "B", # flake8 - bugbear
+    "ANN", # flake8 - annotations
+    "SIM", # flake8 - simplify
+    "I", # isort
+    "N", # pep8 naming
+    "PD", # pandas-vet
+    "PTH", # use pathlib over os
+]
+pydocstyle.convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+  "S101", # Allow assert statements in tests
+  "D100", # Docstring in public module
+  "D103", # Docstring in public function (we shouldnt need to document all tests)
+  "ANN201", # Missing type annotation for public function (we shouldnt need return types for tests)
+]
+"__init__.py" = [
+  "D104", # Missing docstring in public package
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = """
+--verbose \
+--maxfail=1 \
+--color=yes \
+--cov=src \
+--cov-fail-under=90 \
+--cov-report term-missing \
+--doctest-modules \
+--cov-config=pyproject.toml"""

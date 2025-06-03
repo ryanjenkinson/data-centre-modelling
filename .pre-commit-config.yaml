@@ -1,0 +1,62 @@
+ci:
+  autoupdate_commit_msg: 'chore(pre-commit): pre-commit.ci autoupdate'
+  autoupdate_schedule: weekly
+  # Ignore local checks and pip compile, since pre-commit.ci can't access uv. ci will check this anyway
+  skip: [pytest, pip-compile]
+
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    - id: trailing-whitespace
+    - id: check-json
+    - id: check-yaml
+    - id: check-toml
+    - id: check-merge-conflict
+    - id: end-of-file-fixer
+    - id: check-shebang-scripts-are-executable
+    - id: check-added-large-files
+    - id: check-ast
+    - id: check-case-conflict
+    - id: check-docstring-first
+    - id: detect-private-key
+    - id: mixed-line-ending
+    - id: name-tests-test
+      args: ["--pytest-test-first"]
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.7.9
+    hooks:
+      # Compile requirements
+      - id: pip-compile
+        name: pip-compile generate requirements.txt
+        args: [pyproject.toml, -o, requirements.txt]
+        files: pyproject.toml|uv.lock
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.11.12
+    hooks:
+      # Run the linter.
+      - id: ruff
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        stages: [pre-commit, manual]
+        language: system
+        entry: uv run pytest
+        types: [python]
+        pass_filenames: false
