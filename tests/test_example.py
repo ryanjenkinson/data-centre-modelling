@@ -1,6 +1,6 @@
 import pytest
 
-from mypackage.example import divide
+from data_centre_modelling.example import divide
 
 
 def test_cannot_divide_by_zero():
