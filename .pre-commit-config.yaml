@@ -33,6 +33,14 @@ repos:
     - id: mixed-line-ending
     - id: name-tests-test
       args: ["--pytest-test-first"]
+  - repo: https://github.com/roy-ht/pre-commit-jupyter
+    rev: v1.2.1
+    hooks:
+      - id: jupyter-notebook-cleanup
+        args:
+          # - --remove-kernel-metadata
+          - --pin-patterns
+          - "[pin];[donotremove]"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
     rev: 0.7.9
